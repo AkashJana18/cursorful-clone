@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cursorful clone: screen recorder with auto-zoom</title>
+<meta name="description" content="A static, dependency-free study reconstruction of the Cursorful marketing site: auto-zoom screen recorder with local rendering." />
+<meta name="theme-color" content="#ecfdf5" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ---------------------------------------------------------------- nav -->
+<div class="nav-wrap">
+  <header class="nav" id="nav">
+    <a class="brand" href="#" aria-label="Cursorful home">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 4.6c0-.9 1-1.4 1.7-.9l12.1 8.1c.7.5.5 1.6-.4 1.8l-5.6 1.3c-.5.1-.8.4-1 .9l-1.9 4.9c-.3.8-1.5.7-1.7-.1L5 4.6Z" fill="currentColor"/></svg>
+      </span>
+      <span class="brand__name">cursorful</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#apps">Apps</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a class="nav__text" href="#pricing">Sign in</a>
+      <a class="nav__text" href="#look">Open Editor</a>
+      <a class="btn btn--dark btn--sm" href="#look">
+        <span>Try it here</span>
+        <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l1.5 5.1 5.1 1.5-5.1 1.5L12 16l-1.5-5.1L5.4 9.4l5.1-1.5L12 2.8Z" fill="currentColor" opacity=".9"/><circle cx="18.6" cy="17.4" r="1.5" fill="currentColor"/><circle cx="6" cy="18.8" r="1" fill="currentColor"/></svg>
+        <span class="rainbow" aria-hidden="true"></span>
+      </a>
+      <a class="btn btn--green btn--sm" href="#pricing">Install free <span class="arrow" aria-hidden="true">↗</span></a>
+    </div>
+
+    <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a href="#features">Features</a>
+    <a href="#apps">Apps</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#look">Open Editor</a>
+    <div class="mobile-menu__cta">
+      <a class="btn btn--dark" href="#look">Try it here</a>
+      <a class="btn btn--green" href="#pricing">Install free</a>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- -------------------------------------------------------------- hero -->
+<section class="hero">
+  <div class="hero-canvas">
+    <div class="hero-layout">
+
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Less editing. More creating.</p>
+
+      <h1 class="hero__title">
+        Screen recorder<br />
+        with <span class="hl">auto-zoom.<svg class="hl__spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1l1.9 6.6L20.5 9l-6.6 1.9L12 17.5l-1.9-6.6L3.5 9l6.6-1.4L12 1Z" fill="currentColor"/></svg></span>
+      </h1>
+
+      <p class="hero__sub">
+        Meet the screen recorder that edits for you. Just walk through your idea.
+        Cursorful follows your clicks, adds the zooms, and makes it a show.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--green btn--lg" href="#pricing">
+          <span class="osrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#1A73E8"/><path d="M10 10 2.6 5.4A9 9 0 0 1 10 1a9 9 0 0 1 7.8 4.5H10Z" fill="#EA4335"/><path d="M10 10 2.6 5.4A9 9 0 0 0 1 10a9 9 0 0 0 4.7 7.9L10 10Z" fill="#34A853"/><path d="M10 10 5.7 17.9A9 9 0 0 0 17.8 5.5H10Z" fill="#FBBC05"/><circle cx="10" cy="10" r="3.6" fill="#fff"/></svg>
+            <svg viewBox="0 0 16 16"><path d="M11.2 8.5c0-1.6 1.3-2.4 1.4-2.4-.8-1.1-2-1.3-2.4-1.3-1-.1-2 .6-2.5.6-.5 0-1.3-.6-2.2-.6-1.1 0-2.2.7-2.8 1.7-1.2 2.1-.3 5.2.9 6.9.6.9 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6s1.4.6 2.3.6c1 0 1.6-.9 2.1-1.8.5-.7.8-1.5 1-2.3-.1 0-2.3-.9-2.3-2.6ZM9.6 3.8c.5-.6.8-1.4.7-2.2-.7 0-1.6.5-2.1 1.1-.5.5-.9 1.4-.8 2.2.8.1 1.6-.4 2.2-1.1Z" fill="#111"/></svg>
+            <svg viewBox="0 0 16 16"><path d="M1 2.6l5.4-.7v5.2H1V2.6Zm6.2-.8L15 1v6.1H7.2V1.8ZM1 7.7h5.4v5.2L1 12.2V7.7Zm6.2 0H15V15l-7.8-1.1V7.7Z" fill="#111"/></svg>
+          </span>
+          Install free <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--dark btn--lg" href="#look">
+          Try it here
+          <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l1.5 5.1 5.1 1.5-5.1 1.5L12 16l-1.5-5.1L5.4 9.4l5.1-1.5L12 2.8Z" fill="currentColor"/><circle cx="18.6" cy="17.4" r="1.5" fill="currentColor"/><circle cx="6" cy="18.8" r="1" fill="currentColor"/></svg>
+          <span class="rainbow" aria-hidden="true"></span>
+        </a>
+        <a class="btn btn--ghost btn--lg" href="#look">Open editor <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+
+      <p class="hero__meta">Free extension <span aria-hidden="true">·</span> No sign-up <span aria-hidden="true">·</span> No watermark</p>
+
+      <p class="rating-pill">
+        <strong>4.7</strong>
+        <span class="stars" aria-label="4.7 out of 5 stars">★★★★<span class="stars__half">★</span></span>
+        <span class="rating-pill__count">(1,000+ reviews)</span>
+      </p>
+
+      <!-- interactive product mockup -->
+      <div class="demo" data-demo>
+        <div class="demo__bar">
+          <span class="demo__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="demo__file">my_awesome_demo.mp4</span>
+          <span class="demo__auto"><span aria-hidden="true">✦</span> Auto-edited</span>
+        </div>
+
+        <div class="demo__stage">
+          <div class="demo__app" aria-hidden="true">
+            <aside class="demo__side">
+              <span class="sk sk--dot"></span>
+              <span class="sk sk--row"></span>
+              <span class="sk sk--row sk--w70"></span>
+              <span class="sk sk--row sk--w85"></span>
+              <span class="sk sk--row sk--w60"></span>
+              <span class="sk sk--gap"></span>
+              <span class="sk sk--row sk--w75"></span>
+              <span class="sk sk--row sk--w50"></span>
+              <span class="sk sk--row sk--w70"></span>
+            </aside>
+
+            <div class="demo__main">
+              <div class="demo__head">
+                <div>
+                  <h4>Reports</h4>
+                  <p>Growth and engagement across your workspace</p>
+                </div>
+                <span class="demo__share">⤴ Share</span>
+              </div>
+
+              <div class="demo__stats">
+                <div class="stat"><span>Page views</span><strong>3,210</strong><em>+12.4%</em></div>
+                <div class="stat"><span>Unique visitors</span><strong>9,804</strong><em>+6.1%</em></div>
+                <div class="stat"><span>Avg. session</span><strong>4m 12s</strong><em>+0.8%</em></div>
+              </div>
+
+              <div class="demo__chart">
+                <div class="demo__charthead">
+                  <div><span>Monthly views</span><small>Last 30 days</small></div>
+                  <span class="demo__select">30 days ▾</span>
+                </div>
+                <div class="bars">
+                  <i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i>
+                  <i style="--h:88%"></i><i style="--h:64%"></i><i style="--h:96%"></i><i style="--h:74%"></i>
+                  <i style="--h:58%"></i><i style="--h:47%"></i><i style="--h:36%"></i><i style="--h:29%"></i>
+                  <i style="--h:24%"></i><i style="--h:19%"></i><i style="--h:26%"></i><i style="--h:15%"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo__camcol">
+              <div class="demo__cam">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <defs><linearGradient id="camBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4efe9"/><stop offset="1" stop-color="#e6ded4"/></linearGradient></defs>
+                  <rect width="120" height="120" fill="url(#camBg)"/>
+                  <ellipse cx="60" cy="128" rx="46" ry="46" fill="#2f3642"/>
+                  <circle cx="60" cy="58" r="25" fill="#c9a184"/>
+                  <path d="M35 52c0-16 11-24 25-24s25 8 25 24c0-6-14-9-25-9s-25 3-25 9Z" fill="#26201c"/>
+                  <path d="M43 92c5-6 11-9 17-9s12 3 17 9" stroke="#c9a184" stroke-width="7" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo__cursor" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 2.2l14.3 9.2-6.6 1.1 3.1 7-2.6 1.1-3-7-4.2 4z" fill="#111827" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </div>
+
+          <div class="demo__caption">let's widen that out to 30 days.</div>
+        </div>
+
+        <div class="demo__timeline">
+          <button class="demo__play" type="button" aria-label="Play preview">
+            <svg viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="2" width="2" height="8" rx="1" fill="currentColor"/><rect x="7" y="2" width="2" height="8" rx="1" fill="currentColor"/></svg>
+          </button>
+          <div class="track" id="track">
+            <div class="playhead" aria-hidden="true"></div>
+            <button class="zoomseg" type="button" style="--x:24.5%;--w:14.5%"><span class="handle handle--l"></span><span class="zoomseg__label"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="5" cy="5" r="3.2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M7.4 7.4L10 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Zoom</span><span class="handle handle--r"></span></button>
+            <button class="zoomseg" type="button" style="--x:59.5%;--w:14.5%"><span class="handle handle--l"></span><span class="zoomseg__label"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="5" cy="5" r="3.2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M7.4 7.4L10 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Zoom</span><span class="handle handle--r"></span></button>
+          </div>
+        </div>
+
+        <p class="demo__hint"><b>Try it</b> Drag a zoom to move it, pull its edges to resize it. The video follows.</p>
+      </div>
+
+      <div class="hero__float hero__float--mic" aria-hidden="true">
+        <svg viewBox="0 0 160 200">
+          <defs>
+            <linearGradient id="micG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e4e9e6"/></linearGradient>
+          </defs>
+          <rect x="55" y="14" width="52" height="86" rx="26" fill="url(#micG)" stroke="#dfe6e1"/>
+          <g stroke="#cfd8d2" stroke-width="2" stroke-linecap="round">
+            <path d="M56 32h50M56 44h50M56 56h50M56 68h50M56 80h50"/>
+          </g>
+          <path d="M44 76c0 22 16 36 37 36s37-14 37-36" stroke="#d7dfd9" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M81 112v38" stroke="#d7dfd9" stroke-width="6"/>
+          <path d="M58 152h46l8 14H50l8-14Z" fill="url(#micG)" stroke="#dfe6e1"/>
+        </svg>
+      </div>
+
+      <div class="hero__float hero__float--cam" aria-hidden="true">
+        <svg viewBox="0 0 200 150">
+          <defs><linearGradient id="camG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e3e8e6"/></linearGradient></defs>
+          <rect x="18" y="26" width="122" height="70" rx="35" fill="url(#camG)" stroke="#dfe6e1"/>
+          <circle cx="80" cy="61" r="26" fill="#eef2f0" stroke="#d8e0db"/>
+          <circle cx="80" cy="61" r="15" fill="#dfe7e2"/>
+          <circle cx="80" cy="61" r="6" fill="#cbd6cf"/>
+          <rect x="60" y="96" width="40" height="10" rx="5" fill="#eef2f0" stroke="#dfe6e1"/>
+          <rect x="56" y="106" width="48" height="12" rx="6" fill="url(#camG)" stroke="#dfe6e1"/>
+        </svg>
+      </div>
+
+      <div class="hero__notes">
+        <figure class="note note--l">
+          <figcaption><span class="avatar avatar--d">DF</span><b>Dea Fetahu</b></figcaption>
+          <span class="stars stars--sm" aria-label="5 out of 5 stars">★★★★★</span>
+          <p>Makes such a difference from a basic screen recording.</p>
+        </figure>
+        <figure class="note note--r">
+          <figcaption><span class="avatar avatar--e">MR</span><b>Morgan Rock</b></figcaption>
+          <span class="stars stars--sm" aria-label="5 out of 5 stars">★★★★★</span>
+          <p>The best tool for quick tutorial videos or screen grabs…</p>
+        </figure>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------- how it works -->
+<section class="section" id="how">
+  <div class="wrap">
+    <p class="chip chip--center"><span aria-hidden="true">✳</span> How it works</p>
+    <h2 class="section__title center">Record, auto-zoom, share</h2>
+
+    <ol class="steps">
+      <li class="step reveal">
+        <div class="step__head">
+          <span class="step__num">01</span>
+          <h3>Capture your screen</h3>
+        </div>
+        <p>Use the Chrome extension or the Mac and Windows apps. Narrate with your microphone and bring your camera along.</p>
+        <div class="step__art">
+          <div class="wire">
+            <div class="wire__win">
+              <span class="wire__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="sk sk--row sk--w60"></span>
+              <span class="sk sk--row sk--w90"></span>
+              <span class="sk sk--row sk--w75"></span>
+            </div>
+            <div class="wire__rec">
+              <span class="rec__dot" aria-hidden="true"></span> 00:42
+              <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="2" width="5" height="8" rx="2.5" fill="currentColor"/><path d="M8 11v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <span class="rec__stop">Stop</span>
+            </div>
+            <span class="wire__avatar" aria-hidden="true"></span>
+          </div>
+        </div>
+      </li>
+
+      <li class="step reveal">
+        <div class="step__head">
+          <span class="step__num">02</span>
+          <h3>Clicks become zooms</h3>
+        </div>
+        <p>Two clicks within three seconds start a zoom. The view follows your cursor while the clicks keep coming, and eases back out when they stop.</p>
+        <div class="step__art">
+          <div class="zoomdemo">
+            <div class="zoomdemo__panel">
+              <div class="zoomdemo__row">
+                <span class="zoomdemo__search" aria-hidden="true">⌕</span>
+                <span class="zoomdemo__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="sk sk--row sk--w45"></span>
+              </div>
+              <div class="zoomdemo__row"><span class="sk sk--row sk--w80"></span></div>
+              <div class="zoomdemo__row"><span class="sk sk--row sk--w58"></span></div>
+              <span class="zoomdemo__focus" aria-hidden="true"></span>
+              <span class="zoomdemo__playhead" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="step reveal">
+        <div class="step__head">
+          <span class="step__num">03</span>
+          <h3>Export it, or send a link</h3>
+        </div>
+        <p>Render an MP4 or a GIF on your own computer, or publish a streaming link, public, or private to your organization.</p>
+        <div class="step__art">
+          <div class="exportdemo">
+            <div class="exportdemo__bar"><span class="exportdemo__fill" style="width:31%"></span><span class="exportdemo__label">Rendering video…</span><b>31%</b></div>
+            <div class="exportdemo__row"><span>Who can watch</span><span class="exportdemo__org"><svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2.5" y="5.5" width="7" height="5" rx="1.4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M4.3 5.5V4a1.7 1.7 0 0 1 3.4 0v1.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg> Your organization ▾</span></div>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------------- customers -->
+<section class="customers">
+  <p class="customers__label"><span aria-hidden="true"></span> Trusted by people making videos at <span aria-hidden="true"></span></p>
+  <ul class="customers__row">
+    <li class="logo logo--a16z">andreessen.<br />horowitz</li>
+    <li class="logo logo--sf">salesforce</li>
+    <li class="logo logo--wix">WIX</li>
+    <li class="logo logo--gn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 13.5l2.6 2.4 4.4-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Goodnotes</li>
+    <li class="logo logo--walmart">Walmart</li>
+    <li class="logo logo--stanford">Stanford</li>
+    <li class="logo logo--zoom">zoom</li>
+    <li class="logo logo--pinecone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l7 4v11l-7 4-7-4v-11l7-4Zm0 4.4L7.6 9.4v5.2L12 17.1l4.4-2.5V9.4L12 6.9Z" fill="currentColor"/></svg> Pinecone</li>
+  </ul>
+</section>
+
+<!-- ---------------------------------------------------------------- look -->
+<section class="section" id="look">
+  <div class="wrap">
+    <p class="chip chip--center"><span aria-hidden="true">▤</span> Try it here</p>
+    <h2 class="section__title center">One recording, every look</h2>
+    <p class="section__sub center">Hide the background, go vertical, drop the browser frame or put your camera beside the screen. The demo re-renders as you click, with the same engine as the editor.</p>
+
+    <div class="look">
+      <div class="look__stage" id="lookStage" data-preset="vertical" data-aspect="9:16" data-bg="hidden" data-cam="side" data-frame="hidden">
+        <div class="look__canvas">
+          <div class="look__frame">
+            <div class="look__browser" data-el="frame">
+              <span class="look__tabs" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+            <div class="look__screen">
+              <div class="look__stats">
+                <span>Unique visitors <b>9,804</b></span>
+                <span class="look__badge">+12.4%</span>
+              </div>
+              <div class="look__bars" aria-hidden="true">
+                <i style="--h:52%"></i><i style="--h:74%"></i><i style="--h:96%"></i><i style="--h:83%"></i><i style="--h:66%"></i><i style="--h:38%"></i>
+              </div>
+              <span class="look__cursor" aria-hidden="true"></span>
+              <span class="look__caption">Let's jump over to reports.</span>
+              <div class="look__camera" data-el="cam">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <rect width="100" height="100" fill="#efe9e1"/>
+                  <ellipse cx="50" cy="106" rx="38" ry="38" fill="#333a45"/>
+                  <circle cx="50" cy="47" r="21" fill="#c9a184"/>
+                  <path d="M29 42c0-13 9-20 21-20s21 7 21 20c0-5-12-8-21-8s-21 3-21 8Z" fill="#26201c"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="look__play" type="button" aria-label="Pause preview">
+          <svg viewBox="0 0 12 12" aria-hidden="true"><rect x="3" y="2" width="2" height="8" rx="1" fill="currentColor"/><rect x="7" y="2" width="2" height="8" rx="1" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <div class="look__controls" role="group" aria-label="Preview options">
+        <div class="ctl">
+          <span class="ctl__label">Preset</span>
+          <div class="seg" data-group="preset">
+            <button type="button" class="is-on" data-value="vertical">Vertical</button>
+            <button type="button" data-value="horizontal">Horizontal</button>
+          </div>
+        </div>
+        <div class="ctl">
+          <span class="ctl__label">Aspect ratio</span>
+          <div class="seg" data-group="aspect">
+            <button type="button" class="is-on" data-value="9:16">9:16</button>
+            <button type="button" data-value="16:9">16:9</button>
+          </div>
+        </div>
+        <div class="ctl">
+          <span class="ctl__label">Background</span>
+          <div class="seg" data-group="bg">
+            <button type="button" class="is-on" data-value="hidden">Hidden</button>
+            <button type="button" data-value="wallpaper">Wallpaper</button>
+          </div>
+        </div>
+        <div class="ctl">
+          <span class="ctl__label">Camera layout</span>
+          <div class="seg" data-group="cam">
+            <button type="button" class="is-on" data-value="side">Side by side</button>
+            <button type="button" data-value="overlay">Overlay</button>
+          </div>
+        </div>
+        <div class="ctl">
+          <span class="ctl__label">Browser frame</span>
+          <div class="seg" data-group="frame">
+            <button type="button" class="is-on" data-value="hidden">Hidden</button>
+            <button type="button" data-value="minimal">Minimal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------ features -->
+<section class="section section--features" id="features">
+  <div class="wrap">
+    <p class="chip chip--center"><span aria-hidden="true">☰</span> What's in the editor</p>
+    <h2 class="section__title center">Everything a polished<br />demo needs</h2>
+    <p class="section__sub center">Record with the extension or the desktop apps, or drop in any video file. Zooms, crops, captions and backgrounds are applied in the editor, and nothing is uploaded.</p>
+
+    <div class="bento">
+
+      <article class="fcard fcard--wide reveal">
+        <h3>Automatic zooms &amp; pans</h3>
+        <p>Cursorful follows your clicks and cursor with silky, cinematic zooms, no keyframes to place by hand. Record, and the first automatic edit is already done.</p>
+        <div class="fart fart--zoom">
+          <div class="fart__page">
+            <span class="sk sk--row sk--w90"></span>
+            <span class="sk sk--row sk--w60"></span>
+            <span class="fart__field"></span>
+            <span class="fart__btn">Sign up</span>
+          </div>
+          <span class="fart__cursor" aria-hidden="true"></span>
+          <span class="fart__lens" aria-hidden="true"></span>
+        </div>
+      </article>
+
+      <article class="fcard reveal">
+        <h3>Manual zooms, any depth</h3>
+        <p>Drop a zoom anywhere on the timeline, follow the cursor or pin a spot, and dial the depth from shallow to maximum.</p>
+        <div class="fart fart--depth">
+          <div class="depth__panels">
+            <div class="depth__panel"><span class="sk sk--row sk--w80"></span><span class="sk sk--row sk--w55"></span></div>
+            <div class="depth__panel"><span class="sk sk--row sk--w70"></span><span class="depth__dot" aria-hidden="true"></span></div>
+          </div>
+          <div class="depth__chips"><b>Shallow</b><span>Deep</span><span>Maximum</span></div>
+        </div>
+      </article>
+
+      <article class="fcard reveal">
+        <h3>Webcam, your way</h3>
+        <p>Circle, rounded or sharp: dock your camera in any corner, resize it, even move and reshape it per scene.</p>
+        <div class="fart fart--webcam">
+          <div class="webcam__panel"><span class="sk sk--row sk--w85"></span><span class="sk sk--row sk--w60"></span><span class="sk sk--row sk--w72"></span></div>
+          <span class="webcam__bubble" aria-hidden="true"></span>
+        </div>
+      </article>
+
+      <article class="fcard fcard--wide reveal">
+        <h3>Cloud projects with real-time collaboration</h3>
+        <p>Zooms, speed, camera and blur are all segments on one timeline. Share a cloud project and edit it together in real time.</p>
+        <div class="fart fart--collab">
+          <div class="collab">
+            <div class="collab__row"><span class="collab__idx">01</span><span class="collab__seg collab__seg--zoom">⌕ Zoom</span><span class="collab__playhead"></span></div>
+            <div class="collab__row"><span class="collab__idx">02</span><span class="collab__seg collab__seg--speed">⏱ Speed</span><span class="collab__tag collab__tag--c">Sarah Lee</span></div>
+            <div class="collab__row"><span class="collab__idx">03</span><span class="collab__seg collab__seg--cam">◉ Camera</span></div>
+            <div class="collab__row"><span class="collab__idx">04</span><span class="collab__seg collab__seg--blur">✳ Blur</span><span class="collab__tag collab__tag--p">Chris Diaz</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard reveal">
+        <h3>Automatic cropping</h3>
+        <p>Crop to the recorded window automatically, or draw a fixed crop to leave out toolbars, sidebars and anything else off-topic.</p>
+        <div class="fart fart--crop">
+          <div class="crop__doc">
+            <span class="sk sk--row sk--w80"></span><span class="sk sk--row sk--w55"></span><span class="sk sk--row sk--w70"></span>
+            <span class="crop__frame" aria-hidden="true"></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard fcard--wide reveal">
+        <h3>Speed, trim &amp; split</h3>
+        <p>Speed up any segment up to 10x, trim dead air and split takes, all on the same timeline as your zooms.</p>
+        <div class="fart fart--speed">
+          <div class="speedbar">
+            <span class="speedbar__seg"><b>10×</b></span>
+            <span class="speedbar__cut" aria-hidden="true"></span>
+            <span class="speedbar__seg"><b>2×</b></span>
+            <span class="speedbar__seg speedbar__seg--hatch"></span>
+          </div>
+          <p class="fart__note">Speed through the boring parts, trim out the dead air</p>
+        </div>
+      </article>
+
+      <article class="fcard fcard--wide reveal">
+        <h3>One-click captions</h3>
+        <p>Generate captions from your audio, on your device, then style size, fill and stroke to match your brand.</p>
+        <div class="fart fart--captions">
+          <span class="caption-chip">Captions, generated<span class="caret" aria-hidden="true"></span></span>
+          <p class="fart__note">Speech-to-text, in your browser</p>
+        </div>
+      </article>
+
+      <article class="fcard reveal">
+        <h3>Mic with studio denoising</h3>
+        <p>Narrate while you record. Denoising strips fans, hums and keyboard clatter, entirely on your machine.</p>
+        <div class="fart fart--denoise">
+          <div class="eq" aria-hidden="true">
+            <i style="--h:30%"></i><i style="--h:62%"></i><i style="--h:44%"></i><i style="--h:88%"></i><i style="--h:56%"></i><i style="--h:96%"></i><i style="--h:48%"></i><i style="--h:72%"></i><i style="--h:38%"></i><i style="--h:66%"></i><i style="--h:28%"></i>
+          </div>
+          <span class="toggle"><i aria-hidden="true"></i> Denoise microphone</span>
+        </div>
+      </article>
+
+      <article class="fcard fcard--wide reveal">
+        <h3>Hide the browser frame for a cleaner look</h3>
+        <p>Suffer from tab hoarding or a messy bookmarks bar? One click hides the tab strip, address bar and bookmarks, so the recording shows only the page.</p>
+        <div class="fart fart--frame">
+          <div class="frame__win">
+            <div class="frame__tabs"><i></i><i></i><i></i><i></i></div>
+            <div class="frame__url"></div>
+            <div class="frame__body"><span class="sk sk--row sk--w70"></span><span class="sk sk--row sk--w45"></span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard reveal">
+        <h3>Shareable links</h3>
+        <p>Export straight to a streaming link, public or private to your organization. No file juggling, just paste it in Slack.</p>
+        <div class="fart fart--share">
+          <span class="share-link"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.4l2.3 2.2L10 2.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> cursorful.com/share/xK4…</span>
+          <span class="share-copy">Copy</span>
+        </div>
+      </article>
+
+      <article class="fcard fcard--wide reveal">
+        <h3>100% local, offline rendering</h3>
+        <p>Exports run on your device with hardware encoding, up to 4K, private by default. Cloud is opt-in, never required.</p>
+        <div class="fart fart--render">
+          <span class="render__lock" aria-hidden="true">
+            <svg viewBox="0 0 16 16"><rect x="3.5" y="7" width="9" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.8 7V5.2a2.2 2.2 0 0 1 4.4 0V7" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+          </span>
+          <div class="render__body">
+            <div class="render__top"><span>Rendering locally…</span><b>4K</b></div>
+            <span class="render__bar"><i style="width:64%"></i></span>
+            <p class="fart__note">Your video never leaves your machine</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard reveal">
+        <h3>Every aspect ratio</h3>
+        <p>Export the same edit as 16:9 for YouTube, 9:16 for Shorts and Reels, 1:1 for feeds, ten presets from ultrawide to portrait.</p>
+        <div class="fart fart--ratio">
+          <div class="ratio__box">16:9</div>
+          <div class="ratio__chips"><span>16:9</span><span>9:16</span><span>1:1</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="center"><a class="btn btn--ghost" href="#apps">See every feature <span class="arrow" aria-hidden="true">↗</span></a></p>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------- cursor -->
+<section class="section section--cursor" id="cursor">
+  <div class="wrap wrap--cursor">
+    <p class="chip chip--center"><span aria-hidden="true">↗</span> Cursor effects</p>
+    <h2 class="section__title center">Your cursor is the<br />star of the show</h2>
+    <p class="section__sub center">Each card is a live demo. Move your mouse over it and the cursor inside follows yours. These effects need the desktop app, which records the pointer separately so it can be redrawn.</p>
+
+    <div class="cursors">
+      <article class="cursorcard" data-cursor-effect="smooth">
+        <span class="cursorcard__hint">Hover to try it</span>
+        <div class="cursorcard__field">
+          <span class="raw-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 2.2l14.3 9.2-6.6 1.1 3.1 7-2.6 1.1-3-7-4.2 4z" fill="#9aa3b2"/></svg></span>
+          <span class="soft-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 2.2l14.3 9.2-6.6 1.1 3.1 7-2.6 1.1-3-7-4.2 4z" fill="#22c55e"/></svg></span>
+        </div>
+        <div class="cursorcard__text">
+          <h3><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 13c3-6 5 3 8-2s5 1 8-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Smooth movement</h3>
+          <p>Jittery hand movement is replaced with a smoothed path. The gray cursor is your raw input; the green one is what viewers see.</p>
+        </div>
+      </article>
+
+      <article class="cursorcard" data-cursor-effect="size">
+        <span class="cursorcard__hint">Hover to try it</span>
+        <div class="cursorcard__field">
+          <span class="big-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 2.2l14.3 9.2-6.6 1.1 3.1 7-2.6 1.1-3-7-4.2 4z" fill="#111827" stroke="#fff" stroke-width="1.2"/></svg></span>
+        </div>
+        <div class="cursorcard__text">
+          <h3><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16V4h4M12 4h4v4M16 12v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Cursor size</h3>
+          <p>Scale the cursor from subtle to unmissable so it reads clearly on any screen, even a phone playing a 4K demo.</p>
+        </div>
+      </article>
+
+      <article class="cursorcard" data-cursor-effect="blur">
+        <span class="cursorcard__hint">Hover to try it</span>
+        <div class="cursorcard__field">
+          <span class="blur-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 2.2l14.3 9.2-6.6 1.1 3.1 7-2.6 1.1-3-7-4.2 4z" fill="#111827" stroke="#fff" stroke-width="1.2"/></svg></span>
+        </div>
+        <div class="cursorcard__text">
+          <h3><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h8m0 0l-3-3m3 3l-3 3M13 5h4v10h-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Motion blur and sway</h3>
+          <p>Fast movement is blurred along its path, and the cursor tilts into turns and settles when it stops. Flick your mouse across the card.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- --------------------------------------------------------------- apps -->
+<section class="section" id="apps">
+  <div class="wrap">
+    <p class="chip chip--center"><span aria-hidden="true">▣</span> Extension and desktop apps</p>
+    <h2 class="section__title center">One editor, every platform</h2>
+    <p class="section__sub center">Record with the free extension or the Pro desktop apps. Both open the same editor, so nothing changes when you switch.</p>
+
+    <div class="apps">
+      <article class="app app--light reveal">
+        <span class="app__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2.6l2.4 6.2 6.2 2.4-6.2 2.4L12 20l-2.4-6.4L3.4 11.2l6.2-2.4L12 2.6Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </span>
+        <h3>Chrome extension</h3>
+        <p>Records your browser in Chrome, Edge and Brave on macOS, Windows and Linux. Free, no sign-up.</p>
+        <ul class="app__tags"><li>Chrome</li><li>Edge</li><li>Brave</li><li>macOS</li><li>Windows</li><li>Linux</li></ul>
+        <a class="btn btn--green" href="#pricing">Add to Chrome, free</a>
+      </article>
+
+      <article class="app app--dark reveal">
+        <span class="app__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="2.6" y="4" width="18.8" height="12.4" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 19.4h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <h3>Dedicated Mac &amp; Windows apps</h3>
+        <p>Records any app on screen, and captures the pointer separately from the video so the cursor can be redrawn: smoothed, resized, with sway and a shadow.</p>
+        <ul class="app__tags"><li>Any app on screen</li><li>Redrawn cursor</li><li>Pro license</li></ul>
+        <a class="btn btn--white" href="#pricing">Download for Mac or Windows</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------ reviews -->
+<section class="section" id="reviews">
+  <div class="wrap">
+    <p class="chip chip--center"><span aria-hidden="true">★</span> 4.7 on the Chrome Web Store</p>
+    <h2 class="section__title center">Loved by thousands of makers</h2>
+    <p class="section__sub center">Real reviews from the <a href="#reviews">Chrome Web Store</a>, 1,000+ ratings and counting.</p>
+
+    <div class="reviews">
+      <div class="reviews__col">
+        <article class="review reveal" style="--tilt:-1deg">
+          <span class="review__tape" aria-hidden="true"></span>
+          <p>Intuitive, easy to use, and produces good results. Recommend!</p>
+          <footer><span class="avatar avatar--a">AS</span><div><b>Anna Sjöstrand</b><span class="stars stars--sm">★★★★★</span></div></footer>
+        </article>
+        <article class="review reveal" style="--tilt:.6deg">
+          <span class="review__tape" aria-hidden="true"></span>
+          <p>It does everything: Records without fault, edits the focus for you (zoom), shows where you click with a pulse, easy editing in-app after, and allows you to reduce file size substantially while keeping the readability of text in video. I'm a journalist and use Cursorful to show developers and administrators the bugs I run into in my work routine. It works just a little bit better than a screenshot, because they can see where I click exactly, and what happens.</p>
+          <footer><span class="avatar avatar--b">PØ</span><div><b>Pål Øymoen</b><span class="stars stars--sm">★★★★★</span></div></footer>
+        </article>
+      </div>
+
+      <div class="reviews__col reviews__col--mid">
+        <article class="review review--mint reveal" style="--tilt:1.1deg">
+          <span class="review__tape" aria-hidden="true"></span>
+          <p>I finally found the tool that creates these amazing product demo videos that I've been seeing on LinkedIn and Youtube! It was easy to use, pretty intuitive, and great UI!</p>
+          <footer><span class="avatar avatar--c">CV</span><div><b>Cor Villanueva</b><span class="stars stars--sm">★★★★★</span></div></footer>
+        </article>
+        <article class="review reveal" style="--tilt:-.4deg">
+          <span class="review__tape" aria-hidden="true"></span>
+          <p>Love using Cursorful! Best screen recording service out there. Simple to use and produces really high quality content. It was a no-brainer for me to upgrade to pro!</p>
+          <footer><span class="avatar avatar--d">CA</span><div><b>Carter Adams</b><span class="stars stars--sm">★★★★★</span></div></footer>
+        </article>
+      </div>
+
+      <div class="reviews__col">
+        <article class="review reveal" style="--tilt:.8deg">
+          <span class="review__tape" aria-hidden="true"></span>
+          <p>Reliable, fast, easy to use and with great post-recording visual customisation options too. Very refreshing to see a one-time purchase option as well.</p>
+          <footer><span class="avatar avatar--e">MN</span><div><b>Mark Notton</b><span class="stars stars--sm">★★★★★</span></div></footer>
+        </article>
+        <article class="review review--mint reveal" style="--tilt:-.9deg">
+          <span class="review__tape" aria-hidden="true"></span>
+          <p>This product is just FANTASTIC!! Intuitively designed and lovely UI with great animation in mind to help creators capture the screens we need! Not to mention Luca's speedy support to any user questions is amazing!!</p>
+          <footer><span class="avatar avatar--f">RW</span><div><b>Rosie Way</b><span class="stars stars--sm">★★★★★</span></div></footer>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ------------------------------------------------------------ pricing -->
+<section class="section section--pricing" id="pricing">
+  <div class="wrap">
+    <p class="chip chip--center"><span aria-hidden="true">$</span> Pricing</p>
+    <h2 class="section__title center">Free forever.<br />Pro when you're ready.</h2>
+    <p class="section__sub center">The free plan has no time limit and no sign-up. Pro is a one-time payment, not a subscription.</p>
+
+    <div class="plans">
+      <article class="plan plan--free reveal">
+        <header class="plan__head">
+          <div>
+            <h3>Cursorful Free</h3>
+            <p>Record the browser, auto-zoom, edit and export. Free for non-commercial use.</p>
+          </div>
+          <p class="plan__price"><b>$0</b><span>forever</span></p>
+        </header>
+
+        <ul class="plan__list">
+          <li>Record the browser</li>
+          <li>Automatic zoom and pan</li>
+          <li>Add, remove and edit zooms</li>
+          <li>Unlimited video exports</li>
+          <li>Preset and custom backgrounds</li>
+          <li>Hide browser tabs and bookmarks</li>
+          <li>Export in multiple aspect ratios</li>
+          <li>Local offline rendering</li>
+          <li>Available on Windows, macOS and Linux</li>
+          <li>Non-commercial use</li>
+        </ul>
+
+        <a class="btn btn--green btn--block" href="#pricing">
+          <span class="osrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#1A73E8"/><path d="M10 10 2.6 5.4A9 9 0 0 1 10 1a9 9 0 0 1 7.8 4.5H10Z" fill="#EA4335"/><path d="M10 10 2.6 5.4A9 9 0 0 0 1 10a9 9 0 0 0 4.7 7.9L10 10Z" fill="#34A853"/><path d="M10 10 5.7 17.9A9 9 0 0 0 17.8 5.5H10Z" fill="#FBBC05"/><circle cx="10" cy="10" r="3.6" fill="#fff"/></svg>
+            <svg viewBox="0 0 16 16"><path d="M11.2 8.5c0-1.6 1.3-2.4 1.4-2.4-.8-1.1-2-1.3-2.4-1.3-1-.1-2 .6-2.5.6-.5 0-1.3-.6-2.2-.6-1.1 0-2.2.7-2.8 1.7-1.2 2.1-.3 5.2.9 6.9.6.9 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6s1.4.6 2.3.6c1 0 1.6-.9 2.1-1.8.5-.7.8-1.5 1-2.3-.1 0-2.3-.9-2.3-2.6ZM9.6 3.8c.5-.6.8-1.4.7-2.2-.7 0-1.6.5-2.1 1.1-.5.5-.9 1.4-.8 2.2.8.1 1.6-.4 2.2-1.1Z" fill="#111"/></svg>
+            <svg viewBox="0 0 16 16"><path d="M1 2.6l5.4-.7v5.2H1V2.6Zm6.2-.8L15 1v6.1H7.2V1.8ZM1 7.7h5.4v5.2L1 12.2V7.7Zm6.2 0H15V15l-7.8-1.1V7.7Z" fill="#111"/></svg>
+          </span>
+          Install now <span class="arrow" aria-hidden="true">→</span>
+        </a>
+
+        <p class="rating-pill rating-pill--small">
+          <strong>4.7</strong>
+          <span class="stars" aria-label="4.7 out of 5 stars">★★★★<span class="stars__half">★</span></span>
+          <span class="rating-pill__count">(1,000+ reviews)</span>
+        </p>
+      </article>
+
+      <article class="plan plan--pro reveal">
+        <h3 class="plan__pro-title"><span aria-hidden="true">♛</span> Cursorful Pro</h3>
+
+        <div class="plan__pricerow">
+          <s>$119</s>
+          <b class="plan__big">$79</b>
+          <span class="plan__off">$40 off, V2 launch</span>
+        </div>
+        <p class="plan__per" id="perSeat">$79 per seat · one-time payment</p>
+
+        <div class="seats">
+          <span class="seats__label">Seats</span>
+          <div class="stepper" role="group" aria-label="Seat count">
+            <button type="button" id="seatMinus" aria-label="Decrease seats">-</button>
+            <output id="seatCount" aria-live="polite">1</output>
+            <button type="button" id="seatPlus" aria-label="Increase seats">+</button>
+          </div>
+          <div class="seats__pills" role="group" aria-label="Seat presets">
+            <button type="button" class="is-on" data-seats="1">1</button>
+            <button type="button" data-seats="3">3+</button>
+            <button type="button" data-seats="5">5+</button>
+            <button type="button" data-seats="10">10+</button>
+          </div>
+        </div>
+
+        <a class="btn btn--green btn--block plan__cta" href="#pricing">Upgrade now</a>
+
+        <p class="plan__assure"><span>✓ Pay once</span><span>✓ Yours forever</span></p>
+
+        <ul class="plan__list plan__list--dark">
+          <li><span class="pico" aria-hidden="true">▭</span> Cursorful Pro Desktop for macOS and Windows (2 devices)</li>
+          <li><span class="pico" aria-hidden="true">$</span> Commercial use (1 user)</li>
+          <li><span class="pico" aria-hidden="true">◉</span> Microphone and camera support</li>
+          <li><span class="pico" aria-hidden="true">▷</span> 4K exports</li>
+          <li><span class="pico" aria-hidden="true">∞</span> Lifetime access to all current and future offline features</li>
+          <li><span class="pico" aria-hidden="true">☁</span> 15 GB of shared cloud storage. Additional storage at $0.05 per GB per month.</li>
+          <li><span class="pico" aria-hidden="true">◎</span> 3 browser profile activations and 2 desktop activations</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------------------- faq -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="faq">
+      <div class="faq__aside">
+        <p class="chip"><span aria-hidden="true">?</span> FAQ</p>
+        <h2 class="section__title">Common<br />questions</h2>
+        <p class="section__sub">Not answered here? We reply fast. <a href="#faq">Email support</a>.</p>
+        <svg class="faq__doodle" viewBox="0 0 120 60" aria-hidden="true">
+          <path d="M6 40c18-16 40-22 62-16 9 2 15 7 14 12-1 5-9 6-14 2-6-5 4-14 18-16 12-2 20 1 24 4" fill="none" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M104 20l10 6-9 7" fill="none" stroke="#16a34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="faq__note">We're all ears.</span>
+      </div>
+
+      <div class="faq__list">
+        <details class="acc" open>
+          <summary>Will my videos be uploaded to Cursorful's servers?<span class="acc__mark" aria-hidden="true"></span></summary>
+          <p>No, unless you explicitly opt in to cloud features, videos never leave your machine. Videos are rendered locally inside your browser and are saved directly to your computer.</p>
+        </details>
+        <details class="acc">
+          <summary>Do you support Firefox?<span class="acc__mark" aria-hidden="true"></span></summary>
+          <p>Firefox is not supported because of missing features in its browser and extension architecture.</p>
+        </details>
+        <details class="acc">
+          <summary>What triggers the automatic zoom?<span class="acc__mark" aria-hidden="true"></span></summary>
+          <p>Auto zoom is triggered when two or more clicks happen within a 3 second window. The follow-cursor zoom is maintained as long as clicks keep happening. Two clicks are required instead of one to avoid constant zooming in and out, which is overwhelming and can make people with motion sickness nauseous. You can add, remove and adjust zooms in the editor once the recording is complete.</p>
+        </details>
+        <details class="acc">
+          <summary>Does Cursorful record the entire desktop or just the browser?<span class="acc__mark" aria-hidden="true"></span></summary>
+          <p>The desktop apps record the entire desktop, and the editor automatically crops to the active window. The Chrome extension records the screen and crops to your browser window. When a non-browser app is in focus, follow-cursor and automatic zooms stop, because extensions cannot listen to mouse events outside the browser viewport. Fixed zooms can still be added in the editor.</p>
+        </details>
+        <details class="acc">
+          <summary>Do you offer a student discount?<span class="acc__mark" aria-hidden="true"></span></summary>
+          <p>The Pro license is a lifetime deal that already includes a limited time discount. Cloud features carry ongoing costs, so additional discounts are not available.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------------------------------------------------------------- cta -->
+<section class="cta">
+  <div class="cta__inner">
+    <span class="cta__star cta__star--l" aria-hidden="true">✦</span>
+    <span class="cta__star cta__star--r" aria-hidden="true">✦</span>
+    <p class="chip chip--center chip--plain"><span aria-hidden="true">✦</span> Your next great idea starts here</p>
+    <h2 class="section__title center">Your next demo, edited<br /><em>before you hit stop.</em></h2>
+    <p class="section__sub center">Install the extension, press record, and the zooms are already in place when you finish. No account, no watermark.</p>
+
+    <div class="hero__actions hero__actions--tight">
+      <a class="btn btn--green btn--lg" href="#pricing">
+        <span class="osrow" aria-hidden="true">
+          <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#1A73E8"/><path d="M10 10 2.6 5.4A9 9 0 0 1 10 1a9 9 0 0 1 7.8 4.5H10Z" fill="#EA4335"/><path d="M10 10 2.6 5.4A9 9 0 0 0 1 10a9 9 0 0 0 4.7 7.9L10 10Z" fill="#34A853"/><path d="M10 10 5.7 17.9A9 9 0 0 0 17.8 5.5H10Z" fill="#FBBC05"/><circle cx="10" cy="10" r="3.6" fill="#fff"/></svg>
+          <svg viewBox="0 0 16 16"><path d="M11.2 8.5c0-1.6 1.3-2.4 1.4-2.4-.8-1.1-2-1.3-2.4-1.3-1-.1-2 .6-2.5.6-.5 0-1.3-.6-2.2-.6-1.1 0-2.2.7-2.8 1.7-1.2 2.1-.3 5.2.9 6.9.6.9 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6s1.4.6 2.3.6c1 0 1.6-.9 2.1-1.8.5-.7.8-1.5 1-2.3-.1 0-2.3-.9-2.3-2.6ZM9.6 3.8c.5-.6.8-1.4.7-2.2-.7 0-1.6.5-2.1 1.1-.5.5-.9 1.4-.8 2.2.8.1 1.6-.4 2.2-1.1Z" fill="#111"/></svg>
+          <svg viewBox="0 0 16 16"><path d="M1 2.6l5.4-.7v5.2H1V2.6Zm6.2-.8L15 1v6.1H7.2V1.8ZM1 7.7h5.4v5.2L1 12.2V7.7Zm6.2 0H15V15l-7.8-1.1V7.7Z" fill="#111"/></svg>
+        </span>
+        Install free <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="btn btn--dark btn--lg" href="#look">
+        Try it here
+        <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l1.5 5.1 5.1 1.5-5.1 1.5L12 16l-1.5-5.1L5.4 9.4l5.1-1.5L12 2.8Z" fill="currentColor"/></svg>
+        <span class="rainbow" aria-hidden="true"></span>
+      </a>
+      <a class="btn btn--ghost btn--lg" href="#look">Open editor <span class="arrow" aria-hidden="true">↗</span></a>
+    </div>
+    <p class="hero__meta">Free extension <span aria-hidden="true">·</span> No sign-up <span aria-hidden="true">·</span> No watermark</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ------------------------------------------------------------- footer -->
+<footer class="foot">
+  <div class="foot__inner">
+    <div class="foot__brand">
+      <a class="brand brand--foot" href="#">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 4.6c0-.9 1-1.4 1.7-.9l12.1 8.1c.7.5.5 1.6-.4 1.8l-5.6 1.3c-.5.1-.8.4-1 .9l-1.9 4.9c-.3.8-1.5.7-1.7-.1L5 4.6Z" fill="currentColor"/></svg>
+        </span>
+        <span class="brand__name">cursorful</span>
+      </a>
+      <p>Cursorful is a browser extension and desktop app that creates beautiful screen recordings with zooms and pans that guide viewer focus.</p>
+      <p class="foot__copy">© 2026 Cursorful</p>
+      <p class="foot__note">Unofficial design study. Not affiliated with Cursorful.</p>
+    </div>
+
+    <nav class="foot__cols" aria-label="Footer">
+      <div>
+        <h4>Features</h4>
+        <ul>
+          <li><a href="#features">Automatic zoom and pan</a></li>
+          <li><a href="#features">Edit zoom properties</a></li>
+          <li><a href="#features">Real-time collaboration</a></li>
+          <li><a href="#features">Hide browser frame</a></li>
+          <li><a href="#features">Export in multiple aspect ratios</a></li>
+          <li><a href="#features">Local offline rendering</a></li>
+          <li><a href="#apps">Available on all platforms</a></li>
+          <li><a href="#features">All features</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#faq">Terms of Service</a></li>
+          <li><a href="#faq">Refund Policy</a></li>
+          <li><a href="#faq">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#faq">support@cursorful.com</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#faq">Welcome</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#apps">Install</a></li>
+          <li><a href="#look">Editor</a></li>
+          <li><a href="#look">Vertical video maker</a></li>
+          <li><a href="#features">Background remover</a></li>
+          <li><a href="#features">Transcript generator</a></li>
+          <li><a href="#features">Noise remover</a></li>
+          <li><a href="#pricing">Licenses</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
