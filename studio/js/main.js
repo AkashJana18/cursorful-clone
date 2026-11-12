@@ -106,6 +106,7 @@ const state = {
   focusMode: false,
   cropDrag: null,
   exportCancel: false,
+  exporting: false,
   exportBlob: null,
   ext: { id: null, session: null },
   clicks: [],
@@ -752,6 +753,7 @@ function openExport() {
   els.expOverlay.hidden = false;
   state.exportCancel = false;
   state.exportBlob = null;
+  state.exporting = true;
   runExport(format);
 }
 
@@ -771,7 +773,8 @@ async function runExport(format) {
 
     if (!result) {
       els.expSub.textContent = "Export cancelled.";
-      els.expCancel.disabled = false;
+      els.expNote.textContent = "Nothing was written. Adjust the timeline and try again.";
+      els.expSave.hidden = true;
       els.expCancel.textContent = "Close";
       draw(0);
       return;
@@ -788,9 +791,11 @@ async function runExport(format) {
   } catch (err) {
     els.expSub.textContent = "Export failed.";
     els.expNote.textContent = err.message || String(err);
-    els.expCancel.disabled = false;
     els.expCancel.textContent = "Close";
     draw(0);
+  } finally {
+    state.exporting = false;
+    els.expCancel.disabled = false;
   }
 }
 
@@ -1016,13 +1021,15 @@ function bind() {
 
   els.btnExport.addEventListener("click", openExport);
   els.expCancel.addEventListener("click", () => {
-    if (state.exportBlob) {
+    if (!state.exporting) {
       els.expOverlay.hidden = true;
       return;
     }
+    if (state.exportCancel) return;
     state.exportCancel = true;
     els.expCancel.disabled = true;
     els.expCancel.textContent = "Stopping…";
+    els.expSub.textContent = "Stopping the encoder…";
   });
   els.expSave.addEventListener("click", saveExport);
 

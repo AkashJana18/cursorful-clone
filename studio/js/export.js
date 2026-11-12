@@ -125,8 +125,9 @@ export async function exportProject({ project, video, camVideo, canvas, onProgre
 
   video.pause();
   if (camVideo) camVideo.pause();
-  recorder.stop();
-  await stopped;
+  if (recorder.state !== "inactive") recorder.stop();
+  // A recorder that never fires stop must not strand the dialog.
+  await Promise.race([stopped, new Promise((resolve) => setTimeout(resolve, 2500))]);
   stream.getTracks().forEach((t) => t.stop());
 
   if (graph) graph.gain.gain.value = 1;
