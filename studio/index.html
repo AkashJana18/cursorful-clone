@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Studio | Cursorful clone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="studio.css" />
+<link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+</head>
+<body class="app">
+
+<header class="topbar">
+  <a class="brand" href="../index.html" title="Back to the landing page">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M5 4.6c0-.9 1-1.4 1.7-.9l12.1 8.1c.7.5.5 1.6-.4 1.8l-5.6 1.3c-.5.1-.8.4-1 .9l-1.9 4.9c-.3.8-1.5.7-1.7-.1L5 4.6Z" fill="currentColor"/></svg>
+    </span>
+    <span class="brand__name">cursorful</span>
+  </a>
+  <span class="tag">Studio</span>
+
+  <label class="namefield">
+    <span class="sr">Project name</span>
+    <input id="projectName" type="text" value="Untitled demo" spellcheck="false" autocomplete="off" />
+  </label>
+
+  <span class="status" id="extStatus" data-state="local"><i aria-hidden="true"></i><span id="extStatusText">Local only</span></span>
+
+  <div class="spacer"></div>
+
+  <button class="btn btn--ghost" id="btnNew" type="button">New</button>
+  <button class="btn btn--dark" id="btnRecord" type="button">
+    <span class="rec-dot" aria-hidden="true"></span> Record
+  </button>
+  <button class="btn btn--green" id="btnExport" type="button" disabled>Export</button>
+</header>
+
+<main class="workspace">
+
+  <section class="stage" id="stage">
+    <div class="stage__inner">
+      <div class="stage__empty" id="stageEmpty">
+        <p class="eyebrow2"><span aria-hidden="true"></span> Screen recorder with auto-zoom</p>
+        <h1>Record a demo. The zooms are already placed.</h1>
+        <p class="lede">Capture a tab, click through your idea, then press stop. Clicks become zoom segments you can drag, resize, and re-time before you export a file.</p>
+        <div class="stage__actions">
+          <button class="btn btn--green btn--lg" type="button" data-action="record">
+            <span class="osrow" aria-hidden="true">
+              <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#1A73E8"/><path d="M10 10 2.6 5.4A9 9 0 0 1 10 1a9 9 0 0 1 7.8 4.5H10Z" fill="#EA4335"/><path d="M10 10 2.6 5.4A9 9 0 0 0 1 10a9 9 0 0 0 4.7 7.9L10 10Z" fill="#34A853"/><path d="M10 10 5.7 17.9A9 9 0 0 0 17.8 5.5H10Z" fill="#FBBC05"/><circle cx="10" cy="10" r="3.6" fill="#fff"/></svg>
+            </span>
+            Start recording
+          </button>
+          <button class="btn btn--ghost btn--lg" type="button" data-action="demo">Generate a 6s demo clip</button>
+        </div>
+        <p class="hint">No extension needed for manual zooms. Install the click companion to auto-place them from your real clicks.</p>
+      </div>
+
+      <div class="stage__frame" id="stageFrame" hidden>
+        <canvas id="preview" width="1920" height="1080" aria-label="Preview"></canvas>
+      </div>
+    </div>
+
+    <div class="transport" id="transport" hidden>
+      <button class="iconbtn" id="btnPlay" type="button" aria-label="Play">
+        <svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.6 2.2l6 3.8-6 3.8z" fill="currentColor"/></svg>
+        <svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true" hidden><rect x="3" y="2" width="2" height="8" rx="1" fill="currentColor"/><rect x="7" y="2" width="2" height="8" rx="1" fill="currentColor"/></svg>
+      </button>
+      <span class="timecode" id="timecode">0:00.0 / 0:00.0</span>
+      <input class="scrub" id="scrub" type="range" min="0" max="1000" value="0" step="1" aria-label="Scrub" />
+      <button class="iconbtn" id="btnPrevSeg" type="button" aria-label="Previous segment">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M8.6 2.2L3 6l5.6 3.8z" fill="currentColor"/><rect x="2" y="2" width="1.4" height="8" rx=".7" fill="currentColor"/></svg>
+      </button>
+      <button class="iconbtn" id="btnNextSeg" type="button" aria-label="Next segment">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.4 2.2L9 6 3.4 9.8z" fill="currentColor"/><rect x="8.6" y="2" width="1.4" height="8" rx=".7" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <aside class="inspector" id="inspector">
+
+    <section class="panel" id="panelZoom" hidden>
+      <header class="panel__head"><h2>Zoom</h2><span class="panel__meta" id="zoomRange">0.0s to 0.0s</span></header>
+      <label class="field">
+        <span class="field__label">Depth <output id="depthValue">1.8x</output></span>
+        <input type="range" id="depth" min="1.2" max="3" step="0.05" value="1.8" />
+      </label>
+      <div class="row">
+        <button class="btn btn--ghost btn--sm" id="btnFocus" type="button">Set focus</button>
+        <button class="btn btn--ghost btn--sm" id="btnDeleteSeg" type="button">Delete</button>
+      </div>
+      <p class="note" id="focusNote">Focus: center</p>
+    </section>
+
+    <section class="panel">
+      <header class="panel__head"><h2>Output</h2></header>
+      <div class="field">
+        <span class="field__label">Aspect ratio</span>
+        <div class="seg" id="segAspect" role="group" aria-label="Aspect ratio">
+          <button type="button" data-value="16:9" class="is-on">16:9</button>
+          <button type="button" data-value="9:16">9:16</button>
+          <button type="button" data-value="1:1">1:1</button>
+          <button type="button" data-value="4:5">4:5</button>
+        </div>
+      </div>
+      <label class="field">
+        <span class="field__label">Resolution</span>
+        <select id="selRes">
+          <option value="720">720p</option>
+          <option value="1080" selected>1080p</option>
+          <option value="1440">1440p</option>
+          <option value="2160">4K</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="panel">
+      <header class="panel__head"><h2>Look</h2></header>
+      <div class="field">
+        <span class="field__label">Background</span>
+        <div class="seg" id="segBg" role="group" aria-label="Background">
+          <button type="button" data-value="hidden" class="is-on">Hidden</button>
+          <button type="button" data-value="wallpaper">Wallpaper</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field__label">Browser frame</span>
+        <div class="seg" id="segFrame" role="group" aria-label="Browser frame">
+          <button type="button" data-value="hidden" class="is-on">Hidden</button>
+          <button type="button" data-value="minimal">Minimal</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="field__label">Camera</span>
+        <div class="seg" id="segCam" role="group" aria-label="Camera layout">
+          <button type="button" data-value="off" class="is-on">Off</button>
+          <button type="button" data-value="overlay">Overlay</button>
+          <button type="button" data-value="side">Side</button>
+        </div>
+      </div>
+      <div class="field" id="camOptions" hidden>
+        <span class="field__label">Camera shape</span>
+        <div class="seg" id="segShape" role="group" aria-label="Camera shape">
+          <button type="button" data-value="circle" class="is-on">Circle</button>
+          <button type="button" data-value="rounded">Rounded</button>
+          <button type="button" data-value="square">Square</button>
+        </div>
+        <label class="field field--tight">
+          <span class="field__label">Camera size <output id="camSizeValue">18%</output></span>
+          <input type="range" id="camSize" min="10" max="34" step="1" value="18" />
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <header class="panel__head"><h2>Crop</h2></header>
+      <div class="row">
+        <button class="btn btn--ghost btn--sm" id="btnCrop" type="button">Draw crop</button>
+        <button class="btn btn--ghost btn--sm" id="btnCropReset" type="button">Reset</button>
+      </div>
+      <p class="note" id="cropNote">Full frame</p>
+    </section>
+
+    <section class="panel">
+      <header class="panel__head"><h2>Auto-zoom</h2></header>
+      <p class="note" id="clicksNote">No click data yet.</p>
+      <div class="row">
+        <button class="btn btn--ghost btn--sm" id="btnSample" type="button">Load sample clicks</button>
+        <button class="btn btn--ghost btn--sm" id="btnClearZooms" type="button">Clear zooms</button>
+      </div>
+      <details class="extbox" id="extBox">
+        <summary>Click companion</summary>
+        <div class="extbox__body">
+          <p id="extHelp">Load the unpacked extension in <code>chrome://extensions</code>, then click its toolbar button while on the tab you want to record. It opens this studio and streams your click positions here.</p>
+          <p class="note" id="extSession">No session.</p>
+        </div>
+      </details>
+    </section>
+  </aside>
+</main>
+
+<section class="timeline" id="timeline">
+  <div class="tlbar">
+    <div class="tlbar__left">
+      <span class="tlbar__title">Timeline</span>
+      <span class="tlbar__meta" id="segCount">0 zooms</span>
+    </div>
+    <div class="tlbar__right">
+      <button class="btn btn--ghost btn--sm" id="btnAddZoom" type="button" disabled>+ Zoom at playhead</button>
+      <button class="btn btn--ghost btn--sm" id="btnSplit" type="button" disabled>Split</button>
+    </div>
+  </div>
+  <div class="tl" id="tl">
+    <div class="tl__gutter">
+      <div class="tl__rulerPad"></div>
+      <div class="tl__label">Zooms</div>
+    </div>
+    <div class="tl__body" id="tlBody">
+      <div class="tl__ruler" id="tlRuler"></div>
+      <div class="tl__lane" id="tlLane" data-lane="zoom">
+        <div class="tl__empty" id="tlEmpty">No zooms yet. Record with the companion, load sample clicks, or add one at the playhead.</div>
+      </div>
+      <div class="playhead" id="playhead"><span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- recording overlay -->
+<div class="overlay" id="recOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recTitle">
+    <h2 id="recTitle">Start a recording</h2>
+    <p class="modal__sub" id="recSub">Pick the tab you want to record. Chrome will ask which surface to share.</p>
+
+    <div class="optgrid" id="recOptions">
+      <label class="opt"><input type="checkbox" id="optMic" /><span><b>Microphone</b><small>Mixed into the recording</small></span></label>
+      <label class="opt"><input type="checkbox" id="optCam" /><span><b>Camera</b><small>Drawn as a corner tile</small></span></label>
+      <label class="opt opt--full"><input type="checkbox" id="optAudio" checked /><span><b>Tab audio</b><small>Tick "Share tab audio" in the picker</small></span></label>
+    </div>
+
+    <div class="recstate" id="recState" hidden>
+      <span class="recstate__dot" aria-hidden="true"></span>
+      <span class="recstate__timer" id="recTimer">0:00</span>
+      <span class="recstate__meta" id="recMeta">Capturing</span>
+    </div>
+
+    <p class="modal__err" id="recError" hidden></p>
+    <div class="modal__actions">
+      <button class="btn btn--ghost" id="recCancel" type="button">Cancel</button>
+      <button class="btn btn--green" id="recStart" type="button">Start recording</button>
+      <button class="btn btn--dark" id="recStop" type="button" hidden>Stop and edit</button>
+    </div>
+  </div>
+</div>
+
+<!-- export overlay -->
+<div class="overlay" id="expOverlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="expTitle">
+    <h2 id="expTitle">Export</h2>
+    <p class="modal__sub" id="expSub">Rendering with the browser encoder.</p>
+    <dl class="specs" id="expSpecs"></dl>
+    <div class="progress"><span id="expBar"></span></div>
+    <p class="note" id="expNote">This renders in real time, so a 30 second clip takes about 30 seconds.</p>
+    <div class="modal__actions">
+      <button class="btn btn--ghost" id="expCancel" type="button">Cancel</button>
+      <button class="btn btn--green" id="expSave" type="button" hidden>Save file</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<video id="sourceVideo" playsinline hidden></video>
+<video id="webcamVideo" playsinline muted autoplay hidden></video>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
