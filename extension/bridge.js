@@ -4,6 +4,8 @@
 
 (() => {
   if (window.__cursorfulBridge) return;
+  // Only the studio is allowed to read a click session.
+  if (!/^\/studio(\/|$)/.test(window.location.pathname)) return;
   window.__cursorfulBridge = true;
 
   const send = (message) =>
