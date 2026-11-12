@@ -63,13 +63,39 @@ A page cannot see clicks that happen in another tab. That is a browser boundary,
 1. Open `chrome://extensions`, turn on **Developer mode**.
 2. Choose **Load unpacked** and select the `extension/` folder in this repo.
 3. Start the local server, then open the studio once so the origin is known.
-4. Open the tab you want to record, click the companion's toolbar button, and it opens the studio with a capture session attached.
+4. Open the tab you want to record, click the companion's toolbar button, and it focuses this studio and arms a session.
 5. Press **Record** in the studio, pick that same tab in the Chrome picker, and click through your demo.
 6. Press **Stop**. The studio collects the click log and places the zooms.
 
 The companion buffers `pointerdown` positions in the recorded tab and hands the whole log over once, on stop. Timestamps are absolute `Date.now()` values, aligned against the recording start on the same machine.
 
+The studio does not need to know the extension id. The background worker injects a small bridge into the studio tab and relays requests over `postMessage`, so a studio tab that was already open reconnects as soon as the session arms.
+
 Without the extension the studio still works. It just cannot auto-place zooms, so you add them at the playhead or load sample clicks.
+
+### Checking the connection
+
+The Auto-zoom panel shows whether the companion is reachable:
+
+| Badge | Meaning |
+| --- | --- |
+| Not detected | The extension is not installed, or the tab was never injected |
+| Connected | The bridge answered, no capture session is armed |
+| Capturing | A session is armed and buffering clicks |
+
+Press **Test companion** after loading the extension. If it still says Not detected, reload the studio tab so the bridge can be injected, and confirm the extension is enabled at `chrome://extensions`.
+
+If no clicks arrive after a recording, the timeline shows a persistent notice instead of a toast that disappears. **Companion steps** opens the install list.
+
+### Importing a click log
+
+Auto-zoom can be exercised without the extension. **Import clicks** accepts JSON:
+
+```json
+[{ "x": 400, "y": 300, "t": 0.8 }, { "x": 420, "y": 320, "t": 1.2 }]
+```
+
+`x` and `y` are source pixels, `t` is seconds from the start of the clip. Clusters are built with the same three second rule.
 
 ### One honest limitation
 
@@ -144,7 +170,10 @@ Automated through the Chrome DevTools Protocol against the built app:
 - crop by drawing on the preview (60% by 60% from 20%, 20%)
 - switch aspect to 9:16 and confirm the canvas becomes 608x1080
 - export to MP4 and decode the file with `ffmpeg`, then extract frames to confirm the zoom is in the pixels
-- cancel an export midway and confirm no file is produced
+- cancel an export midway twice and confirm the dialog resets to Close with no file produced
+- connect through a stubbed bridge, show idle and capturing states, then record, collect, and place a zoom
+- record with no companion and confirm the empty-recording notice appears
+- import a click log through the file input and place zooms from it
 - reload and confirm the project, segments, depth, crop, and aspect are restored
 
 ## Landing page
