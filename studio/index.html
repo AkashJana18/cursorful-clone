@@ -162,18 +162,31 @@
       <p class="note" id="cropNote">Full frame</p>
     </section>
 
-    <section class="panel">
-      <header class="panel__head"><h2>Auto-zoom</h2></header>
+    <section class="panel" id="panelCompanion">
+      <header class="panel__head">
+        <h2>Auto-zoom</h2>
+        <span class="badge" id="companionBadge" data-state="off">Not detected</span>
+      </header>
       <p class="note" id="clicksNote">No click data yet.</p>
       <div class="row">
         <button class="btn btn--ghost btn--sm" id="btnSample" type="button">Load sample clicks</button>
         <button class="btn btn--ghost btn--sm" id="btnClearZooms" type="button">Clear zooms</button>
       </div>
+      <div class="row">
+        <button class="btn btn--ghost btn--sm" id="btnCompanionTest" type="button">Test companion</button>
+        <button class="btn btn--ghost btn--sm" id="btnImportClicks" type="button">Import clicks</button>
+      </div>
+      <input type="file" id="fileClicks" accept=".json,application/json" hidden />
+      <p class="note" id="extSession">The companion is not running in this browser.</p>
       <details class="extbox" id="extBox">
-        <summary>Click companion</summary>
+        <summary>How to install the companion</summary>
         <div class="extbox__body">
-          <p id="extHelp">Load the unpacked extension in <code>chrome://extensions</code>, then click its toolbar button while on the tab you want to record. It opens this studio and streams your click positions here.</p>
-          <p class="note" id="extSession">No session.</p>
+          <ol class="steps-mini">
+            <li>Open <code>chrome://extensions</code> and turn on Developer mode.</li>
+            <li>Choose <b>Load unpacked</b> and select the <code>extension/</code> folder.</li>
+            <li>Open the tab you want to record, then click the companion's toolbar button.</li>
+            <li>Press Record here, pick that same tab, demo, then stop.</li>
+          </ol>
         </div>
       </details>
     </section>
@@ -190,6 +203,10 @@
       <button class="btn btn--ghost btn--sm" id="btnAddZoom" type="button" disabled>+ Zoom at playhead</button>
       <button class="btn btn--ghost btn--sm" id="btnSplit" type="button" disabled>Split</button>
     </div>
+  </div>
+  <div class="notice" id="noClicksNotice" hidden>
+    <span id="noClicksText">No clicks were captured, so no zooms were placed.</span>
+    <button class="notice__link" id="btnNoticeHelp" type="button">Companion steps</button>
   </div>
   <div class="tl" id="tl">
     <div class="tl__gutter">

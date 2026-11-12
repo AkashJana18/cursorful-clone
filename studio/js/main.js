@@ -5,7 +5,8 @@ import { generateDemoClip } from "./demo.js";
 import { exportProject, pickExportFormat, downloadBlob } from "./export.js";
 import { drawFrame } from "./render.js";
 import { Timeline } from "./timeline.js";
-import { sampleClicks } from "./clicks.js";
+import { normalizeClicks, sampleClicks } from "./clicks.js";
+import { createCompanion } from "./companion.js";
 import {
   clamp,
   outputSize,
@@ -57,6 +58,13 @@ const els = {
   btnSample: $("#btnSample"),
   btnClearZooms: $("#btnClearZooms"),
   extSession: $("#extSession"),
+  companionBadge: $("#companionBadge"),
+  btnCompanionTest: $("#btnCompanionTest"),
+  btnImportClicks: $("#btnImportClicks"),
+  fileClicks: $("#fileClicks"),
+  noClicksNotice: $("#noClicksNotice"),
+  noClicksText: $("#noClicksText"),
+  btnNoticeHelp: $("#btnNoticeHelp"),
   segCount: $("#segCount"),
   btnAddZoom: $("#btnAddZoom"),
   btnSplit: $("#btnSplit"),
@@ -108,10 +116,16 @@ const state = {
   exportCancel: false,
   exporting: false,
   exportBlob: null,
-  ext: { id: null, session: null },
+  ext: { connected: false, session: null },
   clicks: [],
   saveTimer: 0,
 };
+
+const companion = createCompanion({
+  onReady: () => {
+    refreshCompanion({ silent: true });
+  },
+});
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -336,7 +350,7 @@ async function prepareVideo(el, blob) {
 
 async function adoptRecording({ videoBlob, camBlob, duration, width, height, name }) {
   const project = blankProject(name || els.projectName.value || "Untitled demo");
-  if (state.ext.id) project.meta.companion = state.ext.id;
+  if (state.ext.connected) project.meta.companion = true;
 
   project.source = {
     width: width || els.video.videoWidth || 1280,
@@ -516,6 +530,7 @@ function applyAutoZooms(clicks, viewport, { relative = false } = {}) {
 
   state.project.timeline = segments;
   state.project.meta.clicks = timed.length;
+  hideNoClicksNotice();
   state.project.meta.autoZooms = segments.length;
   timeline.setSegments(segments);
   timeline.setSelected(null);
@@ -543,70 +558,82 @@ function loadSampleClicks() {
 
 /* --------------------------------------------------------------- companion */
 
-function chromeSend(message, timeout = 4000) {
-  return new Promise((resolve) => {
-    const runtime = window.chrome?.runtime;
-    if (!state.ext.id || !runtime?.sendMessage) {
-      resolve(null);
-      return;
-    }
-    let settled = false;
-    const finish = (value) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      resolve(value);
-    };
-    const timer = setTimeout(() => finish(null), timeout);
-    try {
-      runtime.sendMessage(state.ext.id, message, (response) => {
-        void runtime.lastError;
-        finish(response || null);
-      });
-    } catch {
-      finish(null);
-    }
-  });
+async function refreshCompanion({ silent = false } = {}) {
+  const ok = await companion.ping();
+  state.ext.connected = ok;
+
+  if (!ok) {
+    setStatus("local", "No companion");
+    els.companionBadge.textContent = "Not detected";
+    els.companionBadge.dataset.state = "off";
+    els.extSession.textContent =
+      "The companion is not running in this browser. Auto-zoom needs it to see clicks in the tab you record.";
+    return false;
+  }
+
+  const info = await companion.send("session", null, 1500);
+  state.ext.session = info && info.active ? info.session : null;
+
+  if (info && info.active) {
+    setStatus("live", "Companion capturing");
+    els.companionBadge.textContent = "Capturing";
+    els.companionBadge.dataset.state = "live";
+    els.extSession.textContent = `Session active, ${info.clicks || 0} click${info.clicks === 1 ? "" : "s"} captured so far.`;
+  } else {
+    setStatus("ok", "Companion connected");
+    els.companionBadge.textContent = "Connected";
+    els.companionBadge.dataset.state = "on";
+    els.extSession.textContent =
+      "Connected. Click the toolbar button on the tab you want to record, then record that tab.";
+  }
+
+  if (!silent && info && info.active) {
+    toast("Companion session found. Record the tab you clicked from.", 5000);
+  }
+  return true;
 }
 
 async function collectClicks() {
-  if (!state.ext.id || !state.ext.session) return null;
-  const result = await chromeSend({ type: "collect", session: state.ext.session }, 8000);
-  if (!result || !Array.isArray(result.clicks)) return null;
-  return result;
+  const info = await companion.send("session", null, 2000);
+  if (!info || !info.active) return null;
+  const res = await companion.send("collect", { session: info.session }, 8000);
+  if (!res || !Array.isArray(res.clicks)) return null;
+  return res;
 }
 
-function initCompanion() {
-  const params = new URLSearchParams(location.search);
-  const extId = params.get("ext");
-  const session = params.get("session");
-
-  if (extId) {
-    state.ext.id = extId;
-    state.ext.session = session;
-    try {
-      sessionStorage.setItem("cursorful:ext", JSON.stringify({ id: extId, session }));
-    } catch { /* ignore */ }
-  } else {
-    try {
-      const saved = JSON.parse(sessionStorage.getItem("cursorful:ext") || "null");
-      if (saved?.id) {
-        state.ext.id = saved.id;
-        state.ext.session = saved.session;
-      }
-    } catch { /* ignore */ }
-  }
-
-  if (state.ext.id) {
-    setStatus("live", "Companion ready");
-    els.extSession.textContent = state.ext.session
-      ? `Session ${state.ext.session.slice(0, 10)} is capturing clicks.`
-      : "Connected. Start a recording from the companion to capture clicks.";
-  } else {
-    setStatus("local", "Local only");
-    els.extSession.textContent = "No session. Click the companion's toolbar button on the tab you want to record.";
-  }
+function showNoClicksNotice(reason) {
+  els.noClicksNotice.hidden = false;
+  els.noClicksText.textContent = reason;
 }
+
+function hideNoClicksNotice() {
+  els.noClicksNotice.hidden = true;
+}
+
+async function importClicksFile(file) {
+  if (!hasProject()) {
+    toast("Record or load a clip first, then import clicks.");
+    return;
+  }
+  let data;
+  try {
+    data = JSON.parse(await file.text());
+  } catch {
+    toast("That file is not valid JSON.");
+    return;
+  }
+  const clicks = normalizeClicks(Array.isArray(data) ? data : data.clicks);
+  if (clicks.length < 2) {
+    toast("No click records found. Expected an array of {x, y, t}.");
+    return;
+  }
+  applyAutoZooms(
+    clicks,
+    { width: els.video.videoWidth, height: els.video.videoHeight },
+    { relative: true }
+  );
+}
+
 
 /* ------------------------------------------------------------------- record */
 
@@ -632,8 +659,8 @@ function startTimer() {
   const tick = async () => {
     if (!state.capture) return;
     els.recTimer.textContent = fmtTime(state.capture.elapsed).replace(/\.\d$/, "");
-    if (state.ext.session) {
-      const status = await chromeSend({ type: "status", session: state.ext.session }, 1200);
+    if (state.ext.connected) {
+      const status = await companion.send("status", null, 1200);
       if (status && Number.isFinite(status.clicks)) {
         els.recMeta.textContent = `${status.clicks} clicks captured`;
       }
@@ -723,10 +750,16 @@ async function finishRecording() {
     const viewport = log.viewport || { width: result.width, height: result.height };
     state.recStartedAt = log.startedAt || result.startedAt;
     applyAutoZooms(log.clicks, viewport);
-  } else if (state.ext.session) {
-    toast("No clicks arrived from the companion. Add zooms manually or reload sample clicks.", 5200);
+  } else if (state.ext.connected) {
+    showNoClicksNotice(
+      "The companion is connected but no clicks arrived. Record the tab you clicked from, and keep it focused while you demo."
+    );
+    toast("No clicks arrived. Record the tab you armed with the companion.", 6000);
   } else {
-    toast("Recorded. Add zooms at the playhead, or install the companion to auto-place them.", 5200);
+    showNoClicksNotice(
+      "No clicks were captured, so no zooms were placed. Auto-zoom needs the click companion."
+    );
+    toast("Recorded. Add zooms at the playhead, or install the companion to place them for you.", 6000);
   }
 }
 
@@ -1141,6 +1174,27 @@ function bind() {
     saveSoon();
   });
 
+  els.btnCompanionTest.addEventListener("click", async () => {
+    els.btnCompanionTest.disabled = true;
+    const ok = await refreshCompanion();
+    els.btnCompanionTest.disabled = false;
+    if (!ok) toast("No companion answered. Load the extension, then reload this tab.", 6000);
+  });
+
+  els.btnImportClicks.addEventListener("click", () => els.fileClicks.click());
+  els.fileClicks.addEventListener("change", async () => {
+    const file = els.fileClicks.files && els.fileClicks.files[0];
+    if (file) await importClicksFile(file);
+    els.fileClicks.value = "";
+  });
+
+  els.btnNoticeHelp.addEventListener("click", () => {
+    const box = $("#extBox");
+    if (box) box.open = true;
+    const panel = $("#panelCompanion");
+    if (panel) panel.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
   els.btnSample.addEventListener("click", loadSampleClicks);
   els.btnClearZooms.addEventListener("click", () => {
     if (!state.project) return;
@@ -1151,6 +1205,7 @@ function bind() {
     updateZoomPanel();
     updateCount();
     updateClicksNote();
+    hideNoClicksNotice();
     draw();
     saveSoon();
   });
@@ -1253,7 +1308,7 @@ window.__studio = { state, draw, seek, addZoomAt, applyAutoZooms, timeline };
 
 async function boot() {
   bind();
-  initCompanion();
+  await refreshCompanion({ silent: true });
   updateCount();
   updateClicksNote();
 
